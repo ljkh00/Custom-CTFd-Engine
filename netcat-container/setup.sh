@@ -8,7 +8,7 @@ chmod -R u-w,g-w,o-r /challs
 #useradd -m -s /bin/bash user
 #cp -r /challs/linux2/user/* /home/user
 #chown -R user: /home/user
-cd challs
+cd /challs
 
 sudo -u ctf socat TCP-LISTEN:2000,reuseaddr,fork EXEC:'python3 ecb/server.py'&
 sudo -u ctf socat TCP-LISTEN:2001,reuseaddr,fork EXEC:'python3 ecb2/server.py'& 
@@ -27,5 +27,9 @@ sudo -u ctf socat TCP-LISTEN:2011,reuseaddr,fork EXEC:'python3 linux1/server.py'
 sudo -u ctf socat TCP-LISTEN:2012,reuseaddr,fork EXEC:'python3 linux3/server.py',pty,echo=0,stderr &
 sudo -u ctf socat TCP-LISTEN:2013,reuseaddr,fork EXEC:'python3 linux4/server.py',pty,echo=0,stderr &
 sudo -u ctf socat TCP-LISTEN:2014,reuseaddr,fork EXEC:'python3 cat2/server.py'&
+cd toto
+sudo -u ctf socat TCP-LISTEN:2015,reuseaddr,fork EXEC:'python3 server.py'&
+cd ../de_brujin
+sudo -u ctf socat TCP-LISTEN:2016,reuseaddr,fork EXEC:'python3 server.py'&
 
 while true; do sleep 1000; done

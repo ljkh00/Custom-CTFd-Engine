@@ -83,7 +83,7 @@ services:
       - "./server-skr/home:/home"
       - "./server-skr/ctfuser:/ctfuser"
       - "./server-skr/motd:/etc/motd"
-    command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;/usr/sbin/sshd -D"
+    command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;echo '13.200.243.43 skrctf.me'>>/etc/hosts;/usr/sbin/sshd -D"
     #networks:
     #  internal:
   
@@ -115,6 +115,8 @@ services:
       - "3022:2012"
       - "3023:2013"
       - "3021:2014"
+      - "3024:2015"
+      - "3025:2016"
 
   linux2:
    container_name: "linux2"

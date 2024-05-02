@@ -96,8 +96,9 @@ def new():
 
         user.team_id = team.id
         db.session.commit()
+        import base64
         system("docker exec server-skr useradd -m %s -s /bin/bash" % teamname)
-        system('''docker exec server-skr bash -c 'echo "%s:%s" | chpasswd' ''' % (teamname,passphrase))
+        system('''docker exec server-skr bash -c 'echo "%s:$(echo %s|base64 -d)" | chpasswd' ''' % (teamname,base64.b64encode(passphrase.encode()).decode()))
         system("docker exec server-skr cp -rp /chal_template/. /home/%s/" % teamname)
         system('''docker exec server-skr bash -c 'chown %s: /home/%s' ''' % (teamname,teamname))
         system('''docker exec server-skr bash -c 'chmod -w /home/%s' ''' % teamname)
