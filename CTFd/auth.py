@@ -122,6 +122,9 @@ def reset_password(data=None):
         )
     return render_template('reset_password.html')
 
+@auth.route("/guide")
+def guide():
+    return render_template("guide.html")
 
 @auth.route('/register', methods=['POST', 'GET'])
 @check_registration_visibility

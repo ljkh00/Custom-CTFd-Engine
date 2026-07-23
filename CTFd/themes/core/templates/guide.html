@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+		<h1>Before you register</h1>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+
+			<div class="skr-guide-banner">
+				<div class="skr-guide-icon">🚩</div>
+				<div class="skr-guide-copy">
+					<p class="skr-guide-title">Solo or team, everyone follows the same steps</p>
+					<p class="skr-guide-sub">
+						Register your account, activate it from your email, then create a team —
+						yes, even if you're playing solo. Team players share the team password
+						with their squad afterwards.
+					</p>
+				</div>
+			</div>
+
+			<ol class="skr-guide-steps">
+				<li><strong>Register</strong> — sign up with your name and email.</li>
+				<li><strong>Check your email</strong> — click the activation link.</li>
+				<li><strong>Create a team</strong> — required even for solo players.</li>
+				<li><strong>Share your team password</strong> — if you have teammates joining.</li>
+			</ol>
+
+			<a href="{{ url_for('auth.register') }}" class="skr-guide-btn">Continue to registration →</a>
+
+		</div>
+	</div>
+</div>
+
+<style>
+.skr-guide-banner {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	background-color: #16172a;
+	border: 2px solid #714cdf;
+	border-radius: 6px;
+	padding: 16px 20px;
+	margin: 0 0 24px;
+}
+
+.skr-guide-icon {
+	font-size: 1.75rem;
+	flex-shrink: 0;
+	line-height: 1;
+}
+
+.skr-guide-copy {
+	flex: 1;
+	min-width: 0;
+}
+
+.skr-guide-title {
+	color: #e4e2ff;
+	font-size: 1rem;
+	font-weight: 700;
+	margin: 0 0 4px;
+}
+
+.skr-guide-sub {
+	color: #a9a6c9;
+	font-size: 0.85rem;
+	margin: 0;
+	line-height: 1.5;
+}
+
+.skr-guide-steps {
+	color: #e4e2ff;
+	font-size: 0.95rem;
+	line-height: 1.9;
+	padding-left: 20px;
+	margin: 0 0 28px;
+}
+
+.skr-guide-steps strong {
+	color: #17b06b;
+}
+
+.skr-guide-btn {
+	display: inline-block;
+	background-color: #714cdf;
+	color: #fff !important;
+	text-decoration: none !important;
+	font-size: 0.9rem;
+	font-weight: 700;
+	padding: 12px 22px;
+	border-radius: 4px;
+	transition: background-color 0.15s ease;
+}
+
+.skr-guide-btn:hover {
+	background-color: #4922bd;
+	color: #fff !important;
+	text-decoration: none !important;
+}
+</style>
+{% endblock %}
