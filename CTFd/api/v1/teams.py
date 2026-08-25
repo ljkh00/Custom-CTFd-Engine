@@ -291,3 +291,37 @@ class TeamAwards(Resource):
             'success': True,
             'data': response.data
         }
+
+@teams_namespace.route('/reset_password')
+class TeamResetPassword(Resource):
+    def post(self):
+        if not authed():
+            abort(403)
+        team = get_current_team()
+        if team:
+            try:
+                data = request.get_json()
+                if data["password"] == data["confirm_password"]:
+                    team.password = data["password"]
+                    db.session.commit()
+                    import os
+                    import base64
+                    os.system('''docker exec server-skr bash -c 'echo "%s:$(echo %s|base64 -d)" | chpasswd' ''' % (team.name,base64.b64encode(data["password"].encode()).decode()))
+                else:
+                    return {
+                        'success': False,
+                        'data': "Password doesn't match!"
+                    }
+            except Exception as e:
+                return {
+                    'success': False,
+                    'data': str(e)
+                }
+            return {
+                'success': True
+            }
+        else:
+            return {
+                'success': False,
+                'data': "You do not join any team yet!"
+            }

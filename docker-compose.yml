@@ -2,24 +2,41 @@ version: '2.1'
 
 services:
   proxy:
-    image: nginx:alpine
-    restart: always
+    #image: nginx:alpine
+    #restart: always
     # Included NGINX config used hostname to determine what it's server_name will be 
     # Either set NGINX_HOSTNAME to it's public DNS name, change this line, or the config
-    hostname: ${NGINX_HOSTNAME:-skrctf.me}
+    #hostname: ${NGINX_HOSTNAME:-skrctf.me}
+    #ports:
+    #  - "80:8000"
+    #  - "443:8443"
+    #volumes:
+    #  - ./ssl:/etc/ssl:ro # Change this to match where your certificates are. Look at and adjust names in nginx.conf
+    #  - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    #  - .data/nginx/logs:/var/log/nginx
+    #networks:
+    #  default:
+    #  internal:
+    #depends_on:
+    #  - ctfd
+
+    image: jonasal/nginx-certbot:latest
+    restart: always
+    environment:
+      - CERTBOT_EMAIL=${email}
+    #env_file:
+    #  - ./nginx-certbot.env
     ports:
-      - "80:8000"
-      - "443:8443"
-    volumes:
-      - ./ssl:/etc/ssl:ro # Change this to match where your certificates are. Look at and adjust names in nginx.conf
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - .data/nginx/logs:/var/log/nginx
+      - 80:80
+      - 443:443
+    volumes:                                    # Storage can be either a
+       - ./nginx_secrets:/etc/letsencrypt          # Docker managed volume (see list at the bottom)
+       - ./user_conf.d:/etc/nginx/user_conf.d    # or a host mount with a relative or full path.
+       - .data/nginx/logs:/var/log/nginx
     networks:
       default:
       internal:
-    depends_on:
-      - ctfd
-  
+
   db:
     image: mariadb:10.4
     container_name: "database"
@@ -83,7 +100,7 @@ services:
       - "./server-skr/home:/home"
       - "./server-skr/ctfuser:/ctfuser"
       - "./server-skr/motd:/etc/motd"
-    command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;echo '13.200.243.43 skrctf.me'>>/etc/hosts;/usr/sbin/sshd -D"
+    command: bash -c "cp /ctfuser/passwd /etc/passwd;cp /ctfuser/group /etc/group;cp /ctfuser/shadow /etc/shadow;echo '3.110.156.54 skrctf.me'>>/etc/hosts;/usr/sbin/sshd -D"
     #networks:
     #  internal:
   
@@ -117,6 +134,10 @@ services:
       - "3021:2014"
       - "3024:2015"
       - "3025:2016"
+      - "3026:2017"
+      - "3027:2018"
+      - "3028:2019"
+      - "3029:2020"
 
   linux2:
    container_name: "linux2"
@@ -125,14 +146,17 @@ services:
    ports:
      - "3015:2000"
 
-  # xmas:
-  #   container_name: "xmas"
-  #   build: ../challenges/xmas
-  #   hostname: "xmas"
-  #   environment: 
-  #     - FLAG=SKR{flag}
-  #   ports:
-  #     - "3024:2000"
+  mfa2:
+    container_name: "mfa2"
+    image: "mfa2"
+    hostname: "mfa2"
+    ports: 
+      - "4999:80"
+    environment: 
+      - FLAG=${mfa2_flag}
+    networks:
+        default:
+    
 
 networks:
     default:

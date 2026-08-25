@@ -29,6 +29,40 @@
 				<small>points</small>
 			{% endif %}
 		</h2>
+		{% if isOwnTeam %}
+		<div class="pt-3">
+			<a class="reset-password">
+				<i class="btn-fa fas fa-key fa-2x px-2" data-toggle="tooltip" data-placement="top"
+				   title="Reset Team Password"></i>
+			</a>
+		</div>
+		<div id="reset-password-modal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-action text-center w-100">Reset Team Password</h2>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body clearfix">
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input type="password" class="form-control" name="password" id="password"/>
+						</div>
+						<div class="form-group">
+							<label for="confirm_password">Confirm Password</label>
+							<input type="password" class="form-control" name="password" id="confirm_password"/>
+						</div>
+						<button id="reset_password" class="btn btn-primary btn-outlined float-right modal-action">
+							Reset
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% endif %}
 	</div>
 </div>
 <div class="container">
@@ -157,6 +191,53 @@
 		var team_self = false;
 		{% endif %}
 		var team_account_id = team_self ? "me" : team_id;
+
+		$('.reset-password').click(function (e) {
+			$('#reset-password-modal').modal('toggle');
+		});
+
+		$("#reset_password").click(function (e) {
+			CTFd.fetch('/api/v1/teams/reset_password', {
+				method: 'POST',
+				body: JSON.stringify({
+					"password":$("#password").val(),
+					"confirm_password":$("#confirm_password").val()
+				})
+			}).then(function (response) {
+				return response.json();
+			}).then(function (response) {
+				if (!response.success) {
+					ezal({
+						title: "Error",
+						body: response.data,
+						button: "Got it!"
+					});
+				}else{
+					ezal({
+						title: "Reset password successfully",
+						body: "You have reset your team's password successfully!",
+						button: "Got it!"
+					});
+				}
+			});
+
+			$.post(script_root + '/api/v1/teams/reset_password', function (response) {
+				var success = response.success;
+				if (success) {
+					ezal({
+						title: "Reset password successfully!",
+						body: "You have reseted your team's password to <kbd>password</kbd>!",
+						button: "Got it!"
+					});
+				}else{
+					ezal({
+						title: "Error",
+						body: response.data,
+						button: "Got it!"
+					});
+				}
+			});
+		});
 	</script>
 	<script src="{{ url_for('views.themes', path='js/vendor/plotly.min.js') }}"></script>
 	<script src="{{ url_for('views.themes', path='js/utils.js') }}"></script>

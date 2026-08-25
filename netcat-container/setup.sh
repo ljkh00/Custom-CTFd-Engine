@@ -31,5 +31,9 @@ cd toto
 sudo -u ctf socat TCP-LISTEN:2015,reuseaddr,fork EXEC:'python3 server.py'&
 cd ../de_brujin
 sudo -u ctf socat TCP-LISTEN:2016,reuseaddr,fork EXEC:'python3 server.py'&
-
+cd ../
+sudo -u ctf socat TCP-LISTEN:2017,reuseaddr,fork EXEC:'python3 kuki_ai/server.py'&
+sudo -u ctf socat TCP-LISTEN:2018,reuseaddr,fork EXEC:'python3 kuki_ai2/server.py'&
+sudo -u ctf socat TCP-LISTEN:2019,reuseaddr,fork EXEC:'python3 kuki_ai3/server.py'&
+sudo -u ctf socat TCP-LISTEN:2020,reuseaddr,fork EXEC:'python3 kuki_ai4/server.py'&
 while true; do sleep 1000; done

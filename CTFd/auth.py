@@ -129,8 +129,8 @@ def reset_password(data=None):
 def register():
     errors = get_errors()
     if request.method == 'POST':
-        name = request.form['name']
-        email_address = request.form['email']
+        name = request.form['name'].strip()
+        email_address = request.form['email'].strip()
         password = request.form['password']
         confirm_password = request.form['confirm-password']
         hcaptcha_response = request.form['h-captcha-response']
@@ -142,7 +142,7 @@ def register():
             pass_short = len(password) == 0
             pass_long = len(password) > 128
             pass_match = password == confirm_password
-            valid_email = validators.validate_email(request.form['email'])
+            valid_email = validators.validate_email(email_address)
             team_name_email_check = validators.validate_email(name)
 
             if not valid_email:
@@ -180,11 +180,7 @@ def register():
             )
         else:
             with app.app_context():
-                user = Users(
-                    name=name.strip(),
-                    email=email_address.lower(),
-                    password=password.strip()
-                )
+                user = Users(name=name, email=email_address, password=password)
                 db.session.add(user)
                 db.session.commit()
                 db.session.flush()

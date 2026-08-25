@@ -65,7 +65,8 @@ class UserSchema(ma.ModelSchema):
         name = data.get('name')
         if name is None:
             return
-
+	# CVE-2020-7245
+        name = name.strip()
         existing_user = Users.query.filter_by(name=name).first()
         if is_admin():
             user_id = data.get('id')
@@ -91,6 +92,8 @@ class UserSchema(ma.ModelSchema):
         email = data.get('email')
         if email is None:
             return
+	# CVE-2020-7245
+        email = email.strip()
 
         existing_user = Users.query.filter_by(email=email).first()
 

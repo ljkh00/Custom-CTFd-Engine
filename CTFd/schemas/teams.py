@@ -53,6 +53,8 @@ class TeamSchema(ma.ModelSchema):
         name = data.get('name')
         if name is None:
             return
+	# CVE-2020-7245
+        name = name.strip()
 
         existing_team = Teams.query.filter_by(name=name).first()
         # Admins should be able to patch anyone but they cannot cause a collision.

@@ -11,6 +11,7 @@ RUN tar xzf Python-2.7.9.tgz
 WORKDIR Python-2.7.9
 RUN ./configure --enable-optimizations
 RUN make altinstall
+RUN pip install requests
 
 ENTRYPOINT /setup.sh
 

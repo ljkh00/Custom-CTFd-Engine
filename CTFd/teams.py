@@ -64,7 +64,7 @@ def new():
     if request.method == 'GET':
         return render_template("teams/new_team.html")
     elif request.method == 'POST':
-        teamname = request.form.get('name')
+        teamname = request.form.get('name').strip()
         passphrase = request.form.get('password', '').strip()
         confirm_passphrase = request.form.get('confirm-password').strip()
         errors = get_errors()
@@ -138,7 +138,8 @@ def private():
         team=team,
         score=score,
         place=place,
-        score_frozen=config.is_scoreboard_frozen()
+        score_frozen=config.is_scoreboard_frozen(),
+	isOwnTeam=True
     )
 
 
@@ -165,5 +166,6 @@ def public(team_id):
         team=team,
         score=score,
         place=place,
-        score_frozen=config.is_scoreboard_frozen()
+        score_frozen=config.is_scoreboard_frozen(),
+	isOwnTeam=False
     )
